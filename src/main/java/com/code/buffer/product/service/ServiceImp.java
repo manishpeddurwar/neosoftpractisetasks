@@ -2,6 +2,7 @@ package com.code.buffer.product.service;
 
 import com.code.buffer.product.entity.Product;
 import com.code.buffer.product.exception.NoProductFoundException;
+import com.code.buffer.product.exception.UpdateProductFoundException;
 import com.code.buffer.product.repository.ProductRepository;
 import com.code.buffer.product.request.ProductRequest;
 import com.code.buffer.product.request.ProductResponse;
@@ -79,4 +80,30 @@ public class ServiceImp implements ServiceI {
 
         return response;
     }
-}
+
+    @Override
+    public void reduceQuantity(long productId, long quantity) {
+        log.info("Reduce Quantity {} for Id: {}", quantity, productId);
+
+        Product product
+                = repo.findById(productId)
+                .orElseThrow(() -> new UpdateProductFoundException(
+                        "Product with given Id not found",
+                        "PRODUCT_NOT_FOUND"
+                ));
+
+        if (product.getQuantity() < quantity) {
+            throw new UpdateProductFoundException(
+                    "Product does not have sufficient Quantity",
+                    "INSUFFICIENT_QUANTITY"
+            );
+        }
+
+        product.setQuantity(product.getQuantity() - quantity);
+        repo.save(product);
+        log.info("Product Quantity updated Successfully");
+    }
+
+    }
+
+

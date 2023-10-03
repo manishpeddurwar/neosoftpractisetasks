@@ -1,5 +1,6 @@
 package com.code.buffer.product.exception;
 
+import lombok.Builder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,4 +19,16 @@ public class GlobalExceptionHandler {
         //return new ResponseEntity<>(response, HttpStatus.valueOf(response.getErrorCode()));
         return ResponseEntity.status(response.getErrorCode()).body(response);
     }
+
+
+    @ExceptionHandler(UpdateProductFoundException.class)
+    public ResponseEntity<ErrorResponse> updateProductFoundException(UpdateProductFoundException ex){
+    return new ResponseEntity<ErrorResponse>(new ErrorResponse().builder()
+            .errorMessage(ex.getMessage())
+            .errorCode(ex.getErrorCode())
+            .build(), HttpStatus.NOT_FOUND);
+}
+
+
+
 }

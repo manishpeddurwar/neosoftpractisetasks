@@ -18,4 +18,7 @@ public interface ServiceI {
 
     public ProductResponse getProdcuctById(Long id);
 
+
+    public void reduceQuantity(long productId, long quantity);
+
 }

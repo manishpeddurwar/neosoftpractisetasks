@@ -73,6 +73,20 @@ public class ProductContoller {
     }
 
 
+    @PutMapping("/reduceQuantity/{id}")
+    public ResponseEntity<Void> reduceQuantity(
+            @PathVariable("id") long productId,
+            @RequestParam long quantity
+    ) {
+        log.info("CreatedUpdateProduct reducequantity for controller");
+
+        service.reduceQuantity(productId,quantity);
+
+        log.info("Completed reducequantity for controller");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
 
 
